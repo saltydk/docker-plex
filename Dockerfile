@@ -18,6 +18,7 @@ RUN \
     apt-get install -y \
       tzdata \
       wget \
+      curl \
       xmlstarlet \
       uuid-runtime \
       unrar \
