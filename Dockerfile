@@ -8,6 +8,7 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ARG INTEL_NEO_VERSION=22.23.23405
 ARG INTEL_IGC_VERSION=1.0.11378
 ARG INTEL_GMMLIB_VERSION=22.1.3
+ARG INTEL_LEVEL_ZERO_VERSION=1.3.23405
 ENV TERM="xterm" LANG="C.UTF-8" LC_ALL="C.UTF-8"
 
 ENTRYPOINT ["/init"]
@@ -33,7 +34,8 @@ RUN \
 # Fetch and install Intel Compute Runtime and its deps
     curl -J -L -o /tmp/libigdgmm12.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/libigdgmm12_${INTEL_GMMLIB_VERSION}_amd64.deb && \
     curl -J -L -o /tmp/#1.deb https://github.com/intel/intel-graphics-compiler/releases/download/igc-${INTEL_IGC_VERSION}/{intel-igc-core,intel-igc-opencl}_${INTEL_IGC_VERSION}_amd64.deb && \
-    curl -J -L -o /tmp/#1.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/{intel-level-zero-gpu,intel-opencl-icd}_${INTEL_NEO_VERSION}_amd64.deb && \
+    curl -J -L -o /tmp/intel-level-zero-gpu.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-level-zero-gpu_${INTEL_LEVEL_ZERO_VERSION}_amd64.deb && \
+    curl -J -L -o /tmp/intel-opencl-icd.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-opencl-icd_${INTEL_NEO_VERSION}_amd64.deb && \
     dpkg -i /tmp/intel-igc-core.deb /tmp/intel-igc-opencl.deb /tmp/intel-level-zero-gpu.deb /tmp/intel-opencl-icd.deb /tmp/libigdgmm12.deb && \
     \
 # Add user
