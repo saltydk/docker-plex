@@ -17,7 +17,7 @@ RUN \
     apt-get update && \
     apt-get install -y \
       tzdata \
-      curl \
+      wget \
       xmlstarlet \
       uuid-runtime \
       unrar \
@@ -31,12 +31,18 @@ RUN \
     tar xzf /tmp/s6-overlay-${S6_OVERLAY_ARCH}.tar.gz -C /usr ./bin && \
     \
 # Fetch and install Intel Compute Runtime and its deps
-    curl -J -L -o /tmp/#1.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/{intel-level-zero-gpu-dbgsym,intel-level-zero-gpu,intel-opencl-icd-dbgsym,intel-opencl-icd,libigdgmm12}_${INTEL_GMMLIB_VERSION}_amd64.deb && \
-    apt install -y /tmp/intel-level-zero-gpu-dbgsym.deb /tmp/intel-level-zero-gpu.deb /tmp/intel-opencl-icd-dbgsym.deb /tmp/intel-opencl-icd.deb /tmp/libigdgmm12.deb && \
-    curl -J -L -o /tmp/#1.deb https://github.com/intel/intel-graphics-compiler/releases/download/igc-${INTEL_IGC_VERSION}/{intel-igc-core,intel-igc-opencl}_${INTEL_IGC_VERSION}_amd64.deb && \
-    apt install -y /tmp/intel-igc-core.deb /tmp/intel-igc-opencl.deb && \
-    curl -J -L -o /tmp/intel-opencl.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-opencl_${INTEL_NEO_VERSION}_amd64.deb && \
-    apt install -y /tmp/intel-opencl.deb && \
+    mkdir neo && \
+    cd neo && \
+    wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.11378/intel-igc-core_1.0.11378_amd64.deb && \
+    wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.11378/intel-igc-opencl_1.0.11378_amd64.deb && \
+    wget https://github.com/intel/compute-runtime/releases/download/22.23.23405/intel-level-zero-gpu-dbgsym_1.3.23405_amd64.ddeb && \
+    wget https://github.com/intel/compute-runtime/releases/download/22.23.23405/intel-level-zero-gpu_1.3.23405_amd64.deb && \
+    wget https://github.com/intel/compute-runtime/releases/download/22.23.23405/intel-opencl-icd-dbgsym_22.23.23405_amd64.ddeb && \
+    wget https://github.com/intel/compute-runtime/releases/download/22.23.23405/intel-opencl-icd_22.23.23405_amd64.deb && \
+    wget https://github.com/intel/compute-runtime/releases/download/22.23.23405/libigdgmm12_22.1.3_amd64.deb && \
+    dpkg -i *.deb && \
+    cd .. && \
+    rm -rf neo && \
     \
 # Add user
     useradd -U -d /config -s /bin/false plex && \
