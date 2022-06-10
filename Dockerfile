@@ -35,8 +35,10 @@ RUN \
     curl -J -L -o /tmp/libigdgmm12.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/libigdgmm12_${INTEL_GMMLIB_VERSION}_amd64.deb && \
     curl -J -L -o /tmp/#1.deb https://github.com/intel/intel-graphics-compiler/releases/download/igc-${INTEL_IGC_VERSION}/{intel-igc-core,intel-igc-opencl}_${INTEL_IGC_VERSION}_amd64.deb && \
     curl -J -L -o /tmp/intel-level-zero-gpu.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-level-zero-gpu_${INTEL_LEVEL_ZERO_VERSION}_amd64.deb && \
+    curl -J -L -o /tmp/intel-level-zero-gpu-dbgsym.debb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-level-zero-gpu-dbgsym_${INTEL_LEVEL_ZERO_VERSION}_amd64.debb && \
     curl -J -L -o /tmp/intel-opencl-icd.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-opencl-icd_${INTEL_NEO_VERSION}_amd64.deb && \
-    dpkg -i /tmp/intel-igc-core.deb /tmp/intel-igc-opencl.deb /tmp/intel-level-zero-gpu.deb /tmp/intel-opencl-icd.deb /tmp/libigdgmm12.deb && \
+    curl -J -L -o /tmp/intel-opencl-icd-dbgsym.debb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-opencl-icd-dbgsym_${INTEL_NEO_VERSION}_amd64.deb && \
+    dpkg -i /tmp/*.deb && \
     \
 # Add user
     useradd -U -d /config -s /bin/false plex && \
