@@ -5,10 +5,9 @@ ARG S6_OVERLAY_ARCH=amd64
 ARG PLEX_BUILD=linux-x86_64
 ARG PLEX_DISTRO=debian
 ARG DEBIAN_FRONTEND="noninteractive"
-ARG INTEL_NEO_VERSION=22.23.23405
-ARG INTEL_IGC_VERSION=1.0.11378
-ARG INTEL_GMMLIB_VERSION=22.1.3
-ARG INTEL_LEVEL_ZERO_VERSION=1.3.23405
+ARG INTEL_NEO_VERSION=21.49.21786
+ARG INTEL_IGC_VERSION=1.0.9441
+ARG INTEL_GMMLIB_VERSION=21.3.3
 ENV TERM="xterm" LANG="C.UTF-8" LC_ALL="C.UTF-8"
 
 ENTRYPOINT ["/init"]
@@ -32,13 +31,12 @@ RUN \
     tar xzf /tmp/s6-overlay-${S6_OVERLAY_ARCH}.tar.gz -C /usr ./bin && \
     \
 # Fetch and install Intel Compute Runtime and its deps
-    curl -J -L -o /tmp/libigdgmm12.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/libigdgmm12_${INTEL_GMMLIB_VERSION}_amd64.deb && \
+    curl -J -L -o /tmp/gmmlib.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-gmmlib_${INTEL_GMMLIB_VERSION}_amd64.deb && \
+    apt install -y /tmp/gmmlib.deb && \
     curl -J -L -o /tmp/#1.deb https://github.com/intel/intel-graphics-compiler/releases/download/igc-${INTEL_IGC_VERSION}/{intel-igc-core,intel-igc-opencl}_${INTEL_IGC_VERSION}_amd64.deb && \
-    curl -J -L -o /tmp/intel-level-zero-gpu.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-level-zero-gpu_${INTEL_LEVEL_ZERO_VERSION}_amd64.deb && \
-    curl -J -L -o /tmp/intel-level-zero-gpu-dbgsym.debb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-level-zero-gpu-dbgsym_${INTEL_LEVEL_ZERO_VERSION}_amd64.debb && \
-    curl -J -L -o /tmp/intel-opencl-icd.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-opencl-icd_${INTEL_NEO_VERSION}_amd64.deb && \
-    curl -J -L -o /tmp/intel-opencl-icd-dbgsym.debb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-opencl-icd-dbgsym_${INTEL_NEO_VERSION}_amd64.deb && \
-    dpkg -i /tmp/*.deb && \
+    apt install -y /tmp/intel-igc-core.deb /tmp/intel-igc-opencl.deb && \
+    curl -J -L -o /tmp/intel-opencl.deb https://github.com/intel/compute-runtime/releases/download/${INTEL_NEO_VERSION}/intel-opencl_${INTEL_NEO_VERSION}_amd64.deb && \
+    apt install -y /tmp/intel-opencl.deb && \
     \
 # Add user
     useradd -U -d /config -s /bin/false plex && \
