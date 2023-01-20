@@ -59,7 +59,7 @@ function getVersionInfo {
 
 
 function installFromUrl {
-  installFromRawUrl "https://plex.tv/${1}"
+  installFromRawUrl "${1}"
 }
 
 function installFromRawUrl {
